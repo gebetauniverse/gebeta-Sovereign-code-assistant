@@ -1,15 +1,21 @@
 # Gebeta Sovereign Code Assistant
 
-**License:** MIT | **Version:** 1.0.0 | **Platform:** Linux, macOS, Windows  
-**Status:** Production Ready
+[![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-1.0.0-brightgreen)](https://github.com/gebetasuq/gebeta-Sovereign-code-assistant-/releases)
+[![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey)]()
+[![Status](https://img.shields.io/badge/status-production--ready-success)]()
+[![CI](https://github.com/gebetasuq/gebeta-Sovereign-code-assistant-/actions/workflows/test.yml/badge.svg)](https://github.com/gebetasuq/gebeta-Sovereign-code-assistant-/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/gebetasuq/gebeta-Sovereign-code-assistant-/branch/main/graph/badge.svg)](https://codecov.io/gh/gebetasuq/gebeta-Sovereign-code-assistant-)
+
+ **AI accelerates engineering without removing human control.**
 
 ---
 
 ## About
 
-Gebeta Sovereign Code Assistant is a local-first AI engineering environment that enables developers and teams to code, review, refactor, test, and execute agent workflows without exposing proprietary source code to third-party AI providers.
+Gebeta Sovereign Code Assistant is a **local-first AI engineering environment** that enables developers and teams to code, review, refactor, test, and execute agent workflows without exposing proprietary source code to third-party AI providers.
 
- "AI accelerates engineering without removing human control."
+It combines local LLM inference (Ollama), IDE-native agent workflows (Continue), and a **control layer** of policies, approvals, and guardrails into a practical system for sovereign software development.
 
 ---
 
@@ -45,8 +51,8 @@ Get up and running in 10 minutes.
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/gebeta/gebeta-sovereign-code-assistant
-cd gebeta-sovereign-code-assistant
+git clone https://github.com/gebetasuq/gebeta-Sovereign-code-assistant-
+cd gebeta-Sovereign-code-assistant-
 ```
 
 2. Install Ollama
@@ -92,7 +98,7 @@ Open VS Code, open the Continue sidebar (Cmd+Shift+P → "Continue: Open Chat"),
 
 ---
 
-Deployment Modes
+**Deployment Modes**
 
 Mode A: Maximum Privacy (Recommended for Sensitive Code)
 
@@ -133,7 +139,7 @@ cp configs/continue-config.yaml ~/.continue/config.yaml
 
 ---
 
-Model Recommendations
+**Model Recommendations**
 
 Use Case Model RAM Command
 Fast autocomplete qwen2.5-coder:1.5b ~2 GB ollama pull qwen2.5-coder:1.5b
@@ -143,7 +149,7 @@ Low RAM fallback phi3:mini ~2.5 GB ollama pull phi3:mini
 
 ---
 
-Security & Trust
+**Security & Trust**
 
 What This Protects Against
 
@@ -154,7 +160,7 @@ Accidental source leakage Air-gappable configuration
 Over-permissioned agents Manual approval required
 Silent execution Agent asks before running commands
 
-What This Does NOT Protect Against
+**What This Does NOT Protect Against**
 
 · Malicious local dependencies (npm, pip, etc.)
 · Insecure commands approved by the user
@@ -165,22 +171,29 @@ What This Does NOT Protect Against
 
 Important: This is a control-first system, not a convenience-first system. Human review is always required.
 
----
+Rate Limiting (v2.0)
 
-Documentation
-
-Document Description
-QUICKSTART.md Get started in 10 minutes
-SECURITY_AND_TRUST.md Threat model and trust boundaries
-TEAM_DEPLOYMENT.md Scale to your team
-USE_CASES.md Real-world examples
-WHY_GEBETA.md Founder vision and philosophy
-ROADMAP.md Product roadmap
-CONTRIBUTING.md How to contribute
+Rate limiting is not implemented in v1.0.0. Public endpoints such as /auth/login and /auth/register are vulnerable to brute‑force attacks. In v2.0, rate limiting will be added with strict limits (e.g., 10 requests per minute per IP for authentication endpoints). Rate‑limited responses will return HTTP 429 with a Retry-After header.
 
 ---
 
-Repository Structure
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [QUICKSTART.md](QUICKSTART.md) | Get started in 10 minutes |
+| [SECURITY_AND_TRUST.md](SECURITY_AND_TRUST.md) | Threat model and trust boundaries |
+| [TEAM_DEPLOYMENT.md](TEAM_DEPLOYMENT.md) | Scale to your team |
+| [USE_CASES.md](USE_CASES.md) | Real-world examples |
+| [WHY_GEBETA.md](WHY_GEBETA.md) | Founder vision and philosophy |
+| [ROADMAP.md](ROADMAP.md) | Product roadmap |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | How to contribute |
+| [TESTING.md](TESTING.md) | Running tests and coverage reports |
+| [PERFORMANCE_TUNING.md](PERFORMANCE_TUNING.md) | Memory limits, JVM tuning, hardware adjustments |
+
+---
+
+**Repository Structure**
 
 ```
 gebeta-sovereign-code-assistant/
@@ -194,7 +207,15 @@ gebeta-sovereign-code-assistant/
 ├── WHY_GEBETA.md            # Founder vision
 ├── ROADMAP.md               # Product roadmap
 ├── CONTRIBUTING.md          # Contribution guidelines
+├── TESTING.md               # Test execution guide
+├── PERFORMANCE_TUNING.md    # Performance optimization
 ├── .gitignore               # Git ignore rules
+├── .gitleaks.toml           # Secret scanning configuration
+├── docker-compose.yml       # Full-stack deployment
+│
+├── .github/
+│   ├── ISSUE_TEMPLATE/      # Issue templates
+│   └── workflows/           # CI test workflows
 │
 ├── configs/                 # Ready-to-use configurations
 │   ├── continue-config.yaml
@@ -204,22 +225,22 @@ gebeta-sovereign-code-assistant/
 │   ├── gebeta-rules.md
 │   └── safe-command-policy.md
 │
-├── templates/               # Starter templates
-│   ├── fastapi-service-template/
-│   ├── springboot-service-template/
-│   └── react-frontend-template/
+├── docs/                    # Additional documentation
+│   ├── architecture.md
+│   └── deployment-modes.md
 │
 ├── examples/                # Example workflows
 │   └── example-agent-prompts.md
 │
-└── docs/                    # Additional documentation
-    ├── architecture.md
-    └── deployment-modes.md
+└── templates/               # Starter templates
+    ├── fastapi-service-template/
+    ├── react-frontend-template/
+    └── springboot-service-template/
 ```
 
 ---
 
-Known Limitations
+**Known Limitations**
 
 · Local models may be slower than cloud models
 · Agent tool use varies by model and hardware
@@ -232,11 +253,11 @@ Positioning: Gebeta promises controlled AI, not perfect AI. That is a stronger p
 
 ---
 
-Roadmap
+**Roadmap**
 
 Version Focus Timeline
 V1 Foundation — Documentation, configs, starter kit ✅ Now
-V2 Platform — Web portal, onboarding, analytics Q3 2026
+V2 Platform — Web portal, onboarding, analytics, rate limiting Q3 2026
 V3 Enterprise — Team control plane, governance, audit dashboard Q1 2027
 
 ---
@@ -247,7 +268,7 @@ If Gebeta Sovereign Code Assistant helps you build with control and privacy, ple
 
 ---
 
-Contributing
+**Contributing**
 
 We welcome contributions! Please see CONTRIBUTING.md for guidelines.
 
@@ -261,13 +282,13 @@ Ways to contribute:
 
 ---
 
-License
+**License**
 
-This project is licensed under the MIT License — see LICENSE for details.
+This project is licensed under the **MIT License** — see [LICENSE](LICENSE) for details.
 
 ---
 
-Founder
+**Founder**
 
 Mohammed B. Kemal
 Founder & System Architect, Gebeta Universe
@@ -277,16 +298,18 @@ Founder & System Architect, Gebeta Universe
 · 🐦 Twitter: @gebetasovereign
 
 ---
+## Acknowledgments
 
-Acknowledgments
-
-· Ollama — Local LLM runtime
-· Continue — IDE AI assistant
-· VS Code — Code editor
-· Warp — Modern terminal (optional)
+- [Ollama](https://ollama.com) — Local LLM runtime
+- [Continue](https://continue.dev) — IDE AI assistant
+- [VS Code](https://code.visualstudio.com) — Code editor
+- [Warp](https://www.warp.dev) — Modern terminal (optional)
 
 ---
 
 Built with ❤️ for sovereign engineering.
 
 Document version: 1.0.0 | Last updated: April 2026
+
+```
+© 2026 Gebeta Universe. All rights reserved.
