@@ -29,8 +29,3 @@ models:
     apiBase: http://localhost:11434
     roles:
       - autocomplete
-
-slash_commands:
-  - name: gebeta
-    description: "Ask Gebeta Sovereign Assistant"
-    run: /chat
