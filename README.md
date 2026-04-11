@@ -1,51 +1,49 @@
-Gebeta Sovereign Code Assistant
+# Gebeta Sovereign Code Assistant
 
-https://img.shields.io/badge/license-MIT-blue
-https://img.shields.io/badge/version-1.0.0-brightgreen
-https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey
-https://img.shields.io/badge/status-production--ready-success
+**License:** MIT | **Version:** 1.0.0 | **Platform:** Linux, macOS, Windows | **Status:** Production Ready
 
-AI accelerates engineering without removing human control.
+> **AI accelerates engineering without removing human control.**
 
 ---
 
-What is Gebeta Sovereign Code Assistant?
+## What is Gebeta Sovereign Code Assistant?
 
-Gebeta Sovereign Code Assistant is a local-first AI engineering environment that enables developers and teams to code, review, refactor, test, and execute agent workflows without exposing proprietary source code to third-party AI providers.
+Gebeta Sovereign Code Assistant is a **local-first AI engineering environment** that enables developers and teams to code, review, refactor, test, and execute agent workflows without exposing proprietary source code to third-party AI providers.
 
-It combines local LLM inference (Ollama), IDE-native agent workflows (Continue), and a control layer of policies, approvals, and guardrails into a practical system for sovereign software development.
-
----
-
-Core Philosophy
-
-· Local First — Models run locally, code stays local
-· Human Approval — Sensitive actions require explicit review
-· Controlled Agents — AI operates inside policy boundaries
-· Auditability — Engineering actions are reviewable
-· Team Standardization — Repeatable, governed AI workflows
+It combines local LLM inference (Ollama), IDE-native agent workflows (Continue), and a **control layer** of policies, approvals, and guardrails into a practical system for sovereign software development.
 
 ---
 
-Features
+## Core Philosophy
 
-Feature Description
- Local Inference Run coding models locally using Ollama — no cloud dependency
- Agent-Ready Multi-step coding workflows with Continue
- Human Approval Explicit review before sensitive actions
- Project Guardrails Repo-specific rules and coding standards
- Auditability Local history, approvals, and action logs
- Team Standardization Shared configs and deployment patterns
- Air-Gapped Option Zero external connectivity required
- Two Deployment Modes Maximum Privacy or Productivity Mode
+- **Local First** — Models run locally, code stays local
+- **Human Approval** — Sensitive actions require explicit review
+- **Controlled Agents** — AI operates inside policy boundaries
+- **Auditability** — Engineering actions are reviewable
+- **Team Standardization** — Repeatable, governed AI workflows
 
 ---
 
-Quick Start
+## Features
+
+| Feature | Description |
+|---------|-------------|
+|  Local Inference | Run coding models locally using Ollama — no cloud dependency |
+|  Agent-Ready | Multi-step coding workflows with Continue |
+|  Human Approval | Explicit review before sensitive actions |
+|  Project Guardrails | Repo-specific rules and coding standards |
+|  Auditability | Local history, approvals, and action logs |
+|  Team Standardization | Shared configs and deployment patterns |
+|  Air-Gapped Option | Zero external connectivity required |
+|  Two Deployment Modes | Maximum Privacy or Productivity Mode |
+
+---
+
+## Quick Start
 
 Get up and running in 10 minutes.
 
-1. Clone the Repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/gebeta/gebeta-sovereign-code-assistant
@@ -95,7 +93,7 @@ Open VS Code, open the Continue sidebar (Cmd+Shift+P → "Continue: Open Chat"),
 
 ---
 
-Installation
+**Installation**
 
 Hardware Prerequisites
 
@@ -157,7 +155,7 @@ Then enable Zero Data Retention in Warp settings.
 
 ---
 
-Configuration
+**Configuration**
 
 Continue Config Files
 
@@ -200,7 +198,7 @@ cat configs/safe-command-policy.md
 
 ---
 
-Deployment Modes
+**Deployment Modes**
 
 Mode A: Maximum Privacy (Recommended for Sensitive Code)
 
@@ -252,7 +250,7 @@ cp configs/continue-config.yaml ~/.continue/config.yaml
 
 ---
 
-Documentation
+**Documentation**
 
 Document Description
 QUICKSTART.md Get started in 10 minutes
@@ -265,7 +263,7 @@ CONTRIBUTING.md How to contribute
 
 ---
 
-Use Cases
+**Use Cases**
 
 1. Secure Backend API Build
 
@@ -290,7 +288,7 @@ Use local AI to review PR changes before human review.
 
 ---
 
-Security & Trust
+**Security & Trust**
 
 What This Protects Against
 
@@ -314,7 +312,7 @@ Important: This is a control-first system, not a convenience-first system. Human
 
 ---
 
-Team Deployment
+**Team Deployment**
 
 Standardization Pattern
 
@@ -341,7 +339,7 @@ Team Benefits
 
 ---
 
-Model Recommendations
+**Model Recommendations**
 
 Use Case Model RAM Command
 Fast autocomplete qwen2.5-coder:1.5b ~2 GB ollama pull qwen2.5-coder:1.5b
@@ -352,7 +350,7 @@ Strong local reasoning deepseek-coder:6.7b ~7 GB ollama pull deepseek-coder:6.7b
 
 ---
 
-Repository Structure
+**Repository Structure**
 
 ```
 gebeta-sovereign-code-assistant/
@@ -390,7 +388,7 @@ gebeta-sovereign-code-assistant/
 
 ---
 
-Known Limitations
+**Known Limitations**
 
 · Local models may be slower than cloud models
 · Agent tool use varies by model and hardware
@@ -403,57 +401,60 @@ Positioning: Gebeta promises controlled AI, not perfect AI. That is a stronger p
 
 ---
 
-Roadmap
+**Roadmap**
 
 Version Focus Timeline
-V1 Foundation — Documentation, configs, starter kit ✅ Now
+
+V1 Foundation — Documentation, configs, starter kit ✅ No
+
 V2 Platform — Web portal, onboarding, analytics Q3 2026
+
 V3 Enterprise — Team control plane, governance, audit dashboard Q1 2027
 
 Roadmap subject to change based on community feedback and contributor availability.
 
 ---
 
-⭐ Support the Project
+**⭐ Support the Project**
 
 If Gebeta Sovereign Code Assistant helps you build with control and privacy, please star this repository and share it with your team.
 
 ---
 
-Contributing
+**Contributing**
 
 We welcome contributions! Please see CONTRIBUTING.md for guidelines.
 
 Ways to contribute:
 
-·  Report bugs
-·  Suggest features
-·  Improve documentation
-·  Submit code improvements
-·  Share with your network
+· Report bugs
+· Suggest features
+· Improve documentation
+· Submit code improvements
+· Share with your network
 
 ---
 
-License
+**License**
 
-This project is licensed under the MIT License — see LICENSE for details.
+This project is licensed under the MIT License —see LICENSE for details.
 
 You are free to use, modify, and distribute this software with attribution.
 
 ---
 
-Founder
+**Founder**
 
 Mohammed B. Kemal
 Founder & System Architect, Gebeta Universe
 
 · 🌐 Website: https://gebetauae.com
-· 🔗 LinkedIn: linkedin.com/in/mohammedbkemal
+· 🔗 LinkedIn: https://www.linkedin.com/in/mohammed-b-kemal
 · 🐦 Twitter: @gebetasovereign
 
 ---
 
-Acknowledgments
+**Acknowledgments**
 
 · Ollama — Local LLM runtime
 · Continue — IDE AI assistant
@@ -465,3 +466,7 @@ Acknowledgments
 Built with ❤️ for sovereign engineering.
 
 Document version: 1.0.0 | Last updated: April 2026
+
+```
+
+---
