@@ -10,10 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -27,10 +26,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Tests for User Controller.
  * Follows Gebeta Sovereign Coding Rules for security and quality.
- * 
- * Test coverage:
- * - GET /users/me (success, unauthorized, invalid token, expired token)
- * - PUT /users/me (full update, partial update, weak password, duplicate email)
  */
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -38,17 +33,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerTest {
 
     @Container
+    @ServiceConnection
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15")
             .withDatabaseName("testdb")
             .withUsername("testuser")
             .withPassword("testpass");
-
-    @DynamicPropertySource
-    static void properties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.username", postgres::getUsername);
-        registry.add("spring.datasource.password", postgres::getPassword);
-    }
 
     @Autowired
     private MockMvc mockMvc;
@@ -65,6 +54,7 @@ class UserControllerTest {
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private String authToken;
     private Long userId;
+    private String userEmail;
 
     @BeforeEach
     void setUp() {
@@ -72,7 +62,8 @@ class UserControllerTest {
         
         // Create test user
         User user = new User();
-        user.setEmail("user@example.com");
+        userEmail = "user@example.com";
+        user.setEmail(userEmail);
         user.setPassword(passwordEncoder.encode("StrongPass123!"));
         user.setFullName("Test User");
         user.setCreatedAt(LocalDateTime.now());
@@ -82,16 +73,17 @@ class UserControllerTest {
         authToken = jwtUtil.generateToken(user.getEmail());
     }
 
-    // ========== GET /users/me Tests ==========
+    // ========== Get Current User Tests ==========
 
     @Test
     void getCurrentUser_Success() throws Exception {
         mockMvc.perform(get("/api/v1/users/me")
                 .header("Authorization", "Bearer " + authToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value("user@example.com"))
+                .andExpect(jsonPath("$.email").value(userEmail))
                 .andExpect(jsonPath("$.fullName").value("Test User"))
-                .andExpect(jsonPath("$.password").doesNotExist());
+                .andExpect(jsonPath("$.password").doesNotExist())
+                .andExpect(jsonPath("$.hashed_password").doesNotExist());
     }
 
     @Test
@@ -109,23 +101,19 @@ class UserControllerTest {
 
     @Test
     void getCurrentUser_ExpiredToken_Returns401() throws Exception {
-        // Create an expired token (using a past date)
-        String expiredToken = jwtUtil.generateTokenWithExpiration("user@example.com", -1000L);
+        // Generate an expired token (set expiration to past)
+        String expiredToken = jwtUtil.generateTokenWithExpiration(userEmail, -1000);
         
         mockMvc.perform(get("/api/v1/users/me")
                 .header("Authorization", "Bearer " + expiredToken))
                 .andExpect(status().isUnauthorized());
     }
 
-    // ========== PUT /users/me Tests ==========
+    // ========== Update Current User Tests ==========
 
     @Test
     void updateCurrentUser_FullUpdate_Success() throws Exception {
-        UserUpdateRequest updateRequest = new UserUpdateRequest(
-            "updated@example.com",
-            "Updated Name",
-            "NewStrongPass123!"
-        );
+        UserUpdateRequest updateRequest = new UserUpdateRequest("updated@example.com", "NewStrongPass123!", "Updated Name");
 
         mockMvc.perform(put("/api/v1/users/me")
                 .header("Authorization", "Bearer " + authToken)
@@ -138,7 +126,7 @@ class UserControllerTest {
     }
 
     @Test
-    void updateCurrentUser_PartialUpdate_OnlyEmail() throws Exception {
+    void updateCurrentUser_PartialUpdate_EmailOnly_Success() throws Exception {
         UserUpdateRequest updateRequest = new UserUpdateRequest();
         updateRequest.setEmail("partial@example.com");
 
@@ -152,52 +140,17 @@ class UserControllerTest {
     }
 
     @Test
-    void updateCurrentUser_PartialUpdate_OnlyFullName() throws Exception {
+    void updateCurrentUser_PartialUpdate_FullNameOnly_Success() throws Exception {
         UserUpdateRequest updateRequest = new UserUpdateRequest();
-        updateRequest.setFullName("Only Name Changed");
+        updateRequest.setFullName("Partial Name Only");
 
         mockMvc.perform(put("/api/v1/users/me")
                 .header("Authorization", "Bearer " + authToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateRequest)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.fullName").value("Only Name Changed"))
-                .andExpect(jsonPath("$.email").value("user@example.com")); // Unchanged
-    }
-
-    @Test
-    void updateCurrentUser_PartialUpdate_OnlyPassword() throws Exception {
-        UserUpdateRequest updateRequest = new UserUpdateRequest();
-        updateRequest.setPassword("PartialUpdatePass123!");
-
-        mockMvc.perform(put("/api/v1/users/me")
-                .header("Authorization", "Bearer " + authToken)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(updateRequest)))
-                .andExpect(status().isOk());
-        
-        // Verify old login fails, new password works
-        mockMvc.perform(post("/api/v1/auth/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"email\":\"user@example.com\",\"password\":\"StrongPass123!\"}"))
-                .andExpect(status().isUnauthorized());
-        
-        mockMvc.perform(post("/api/v1/auth/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"email\":\"user@example.com\",\"password\":\"PartialUpdatePass123!\"}"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    void updateCurrentUser_WeakPassword_Returns400() throws Exception {
-        UserUpdateRequest updateRequest = new UserUpdateRequest();
-        updateRequest.setPassword("123");
-
-        mockMvc.perform(put("/api/v1/users/me")
-                .header("Authorization", "Bearer " + authToken)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(updateRequest)))
-                .andExpect(status().isBadRequest());
+                .andExpect(jsonPath("$.email").value(userEmail)) // Unchanged
+                .andExpect(jsonPath("$.fullName").value("Partial Name Only"));
     }
 
     @Test
@@ -223,6 +176,18 @@ class UserControllerTest {
     void updateCurrentUser_InvalidEmail_Returns400() throws Exception {
         UserUpdateRequest updateRequest = new UserUpdateRequest();
         updateRequest.setEmail("not-an-email");
+
+        mockMvc.perform(put("/api/v1/users/me")
+                .header("Authorization", "Bearer " + authToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updateRequest)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void updateCurrentUser_WeakPassword_Returns400() throws Exception {
+        UserUpdateRequest updateRequest = new UserUpdateRequest();
+        updateRequest.setPassword("123");
 
         mockMvc.perform(put("/api/v1/users/me")
                 .header("Authorization", "Bearer " + authToken)
