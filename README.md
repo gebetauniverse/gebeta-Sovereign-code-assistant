@@ -379,7 +379,7 @@ gebeta-sovereign-code-assistant/
  Roadmap
 
 Version	Focus	Timeline	
-V1	Foundation — Docs + configs + starter kit	✅ Complete	
+V1	Foundation — Docs + configs + starter kit	Complete	
 V2	Platform — Web portal + onboarding	Q3 2025	
 V3	Enterprise — Team control plane + governance	Q4 2025	
 
