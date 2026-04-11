@@ -1,0 +1,36 @@
+name: Gebeta Sovereign - Safe Mode
+version: 0.1.0
+schema: v1
+
+models:
+  - name: Qwen Coder 7B (Agent - Safe)
+    provider: ollama
+    model: qwen2.5-coder:7b
+    apiBase: http://localhost:11434
+    roles:
+      - chat
+      - edit
+    capabilities:
+      - tool_use
+
+  - name: Phi3 Mini (Low Resource)
+    provider: ollama
+    model: phi3:mini
+    apiBase: http://localhost:11434
+    roles:
+      - autocomplete
+
+context:
+  - directory: .
+    exclude:
+      - node_modules
+      - .git
+      - __pycache__
+      - .env
+      - "*.secret"
+      - "*.key"
+
+slash_commands:
+  - name: gebeta-safe
+    description: "Ask Gebeta Sovereign Assistant (Safe Mode)"
+    run: /chat
