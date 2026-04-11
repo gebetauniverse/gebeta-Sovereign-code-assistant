@@ -1,0 +1,40 @@
+# .gitleaks.toml
+title = "Gebeta Sovereign Code Assistant secret scanning"
+
+[[rules]]
+id = "aws-access-key"
+description = "AWS access key"
+regex = '''AKIA[0-9A-Z]{16}'''
+
+[[rules]]
+id = "private-key"
+description = "Private key (RSA, EC, etc.)"
+regex = '''-----BEGIN (RSA|EC|OPENSSH|DSA) PRIVATE KEY-----'''
+
+[[rules]]
+id = "generic-api-key"
+description = "Generic API key"
+regex = '''(?i)(api[_-]?key|apikey|secret|token|password|passwd|pwd)[\s]*[:=][\s]*['"]?[0-9a-zA-Z\-_]{16,}['"]?'''
+
+[[rules]]
+id = "jwt-token"
+description = "JWT token"
+regex = '''eyJ[a-zA-Z0-9_-]*\.[a-zA-Z0-9_-]*\.[a-zA-Z0-9_-]*'''
+
+[[rules]]
+id = "slack-token"
+description = "Slack token"
+regex = '''xox[baprs]-[0-9]{12}-[0-9]{13}'''
+
+[[rules]]
+id = "github-token"
+description = "GitHub token"
+regex = '''gh[pous]_[0-9a-zA-Z]{36,}'''
+
+[[rules]]
+id = "postgresql-connection"
+description = "PostgreSQL connection string with password"
+regex = '''postgresql://[^:]+:[^@]+@'''
+
+[extend]
+useDefault = true
