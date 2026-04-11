@@ -1,0 +1,36 @@
+name: Gebeta Sovereign
+version: 0.1.0
+schema: v1
+
+models:
+  - name: Qwen Coder 7B (Agent)
+    provider: ollama
+    model: qwen2.5-coder:7b
+    apiBase: http://localhost:11434
+    roles:
+      - chat
+      - edit
+    capabilities:
+      - tool_use
+
+  - name: CodeLlama 7B (Fallback)
+    provider: ollama
+    model: codellama:7b
+    apiBase: http://localhost:11434
+    roles:
+      - chat
+      - edit
+    capabilities:
+      - tool_use
+
+  - name: CodeLlama Auto
+    provider: ollama
+    model: codellama:7b
+    apiBase: http://localhost:11434
+    roles:
+      - autocomplete
+
+slash_commands:
+  - name: gebeta
+    description: "Ask Gebeta Sovereign Assistant"
+    run: /chat
