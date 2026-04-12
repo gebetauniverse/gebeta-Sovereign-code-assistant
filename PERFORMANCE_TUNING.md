@@ -15,23 +15,31 @@ For a machine with **16GB RAM**, the recommended memory limits are:
 ### Adjusting for Different Hardware
 
 #### 8GB RAM
+
 Reduce limits in `docker-compose.yml`:
+
 ```yaml
-ollama: mem_limit: 4g
-api: mem_limit: 1g
-inference-proxy: mem_limit: 512m
-db: mem_limit: 512m
+ollama:
+  mem_limit: 4g
+api:
+  mem_limit: 1g
+inference-proxy:
+  mem_limit: 512m
+db:
+  mem_limit: 512m
 ```
 
-Also use a smaller model: ollama pull phi3:mini
+Also use a smaller model: ollama pull phi3:mini.
 
 32GB RAM
 
 Increase limits for better performance:
 
 ```yaml
-ollama: mem_limit: 16g
-api: mem_limit: 4g
+ollama:
+  mem_limit: 16g
+api:
+  mem_limit: 4g
 ```
 
 Consider using qwen2.5-coder:14b or codellama:13b.
@@ -67,5 +75,3 @@ The docker-compose.yml includes healthchecks for Ollama, ensuring the inference 
 ---
 
 Part of Gebeta Sovereign Code Assistant
-
-```
